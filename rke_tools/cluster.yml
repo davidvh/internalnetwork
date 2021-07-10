@@ -1,0 +1,11 @@
+nodes:
+  - address: kube2.marms
+    user: kube
+    role:
+      - controlplane
+      - etcd
+      - worker
+  - address: kube1.marms
+    user: kube
+    role:
+      - worker

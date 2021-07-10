@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ansible-playbook update_kube_nodes.yml -i `pwd`/hosts --ask-become-pass
