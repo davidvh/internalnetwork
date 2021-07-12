@@ -2,4 +2,6 @@
 # ssh-keygen -t rsa
 
 ssh-copy-id kube@kube1.marms
+ssh -t kube@kube1.marms 'sudo mkdir /root/.ssh;sudo cp ~/.ssh/authorized_keys /root/.ssh/'
 ssh-copy-id kube@kube2.marms
+ssh -t kube@kube2.marms 'sudo mkdir /root/.ssh;sudo cp ~/.ssh/authorized_keys /root/.ssh/'

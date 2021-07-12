@@ -1,0 +1,6 @@
+curl -sLS https://get.k3sup.dev | sh
+
+k3sup install --host kube1.marms --k3s-channel stable
+k3sup join --host kube2.marms --server-host kube1.marms --k3s-channel stable
+
+export KUBECONFIG=`pwd`/kubeconfig

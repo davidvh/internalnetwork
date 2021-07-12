@@ -8,4 +8,5 @@ nodes:
   - address: kube1.marms
     user: kube
     role:
+      - etcd
       - worker
