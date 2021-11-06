@@ -13,11 +13,13 @@
   ansible.builtin.unarchive:
     src: /tmp/helm-{{ helm_version }}.tar.gz
     dest: /tmp/helm-{{ helm_version }}
+    remote_src: yes
 
 - name: Install helm binary
   ansible.builtin.copy:
     src: /tmp/helm-{{ helm_version }}/linux-amd64/helm
     dest: /usr/local/bin/helm
+    remote_src: yes
     owner: root
     group: root
     mode: 0755
