@@ -1,2 +1,6 @@
 - name: K3s
   import_playbook: ../external/k3s-ansible/site.yml
+
+- hosts: master[0]
+  roles:
+    - role: kubectl_installer
