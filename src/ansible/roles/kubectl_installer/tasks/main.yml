@@ -9,6 +9,11 @@
     group: root
     mode: 0755
 
+- name: Create temp helm folder
+  ansible.builtin.file:
+    path: /tmp/helm-{{ helm_version }}
+    state: directory
+
 - name: Extract helm binary
   ansible.builtin.unarchive:
     src: /tmp/helm-{{ helm_version }}.tar.gz
