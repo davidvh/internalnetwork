@@ -50,4 +50,4 @@
         ingress:
           enabled: true
           hosts:
-            - cluster1.marms
+            - monitoring.service.marms
