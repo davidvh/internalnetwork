@@ -1,2 +1,7 @@
-Execute the scripts in this folder as needed.
-The docker image can be run with `docker -it -v ~/.ssh:~/.ssh <imagename> /scripts/<script>
+#!/bin/bash
+
+echo Execute the scripts in this folder as needed.
+echo The docker image can be run with 'docker -it -v ~/.ssh:/root/.ssh <imagename> /scripts/<script>'
+
+echo Scripts:
+ls `dirname $0` -w 1

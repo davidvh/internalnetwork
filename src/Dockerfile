@@ -10,4 +10,4 @@ RUN chmod +x /scripts/*
 
 WORKDIR /
 
-CMD [ "cat" "/scripts/help" ]
+CMD [ "/scripts/help" ]
