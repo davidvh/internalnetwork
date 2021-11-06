@@ -1,7 +1,0 @@
-#!/bin/sh
-
-curl -fsSL -o rke https://github.com/rancher/rke/releases/download/v1.2.9/rke_linux-amd64
-chmod 700 rke
-
-./rke up
-export KUBECONFIG=`pwd`/kube_config_cluster.yml

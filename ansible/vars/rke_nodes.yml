@@ -1,1 +1,0 @@
-sys_packages: [ 'docker.io', 'htop', 'open-iscsi' ]
