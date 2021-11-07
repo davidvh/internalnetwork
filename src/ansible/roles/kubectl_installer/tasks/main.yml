@@ -46,8 +46,15 @@
     release_namespace: monitoring
     create_namespace: true
     values:
+      alertmanager:
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          hosts:
+            - alertmanager.service.marms
       server:
         ingress:
           enabled: true
+          ingressClassName: traefik
           hosts:
             - monitoring.service.marms
