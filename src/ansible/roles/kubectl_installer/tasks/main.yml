@@ -39,6 +39,11 @@
     name: prometheus-community
     repo_url: "https://prometheus-community.github.io/helm-charts"
 
+- name: Add K8s at home chart repo
+  kubernetes.core.helm_repository:
+    name: k8s-at-home
+    repo_url: "https://k8s-at-home.com/charts/"
+
 - name: Deploy latest version of Prometheus chart inside monitoring namespace
   kubernetes.core.helm:
     name: stable
@@ -66,3 +71,10 @@
             traefik.ingress.kubernetes.io/frontend-entry-points: http,https
             traefik.ingress.kubernetes.io/redirect-entry-point: https
             traefik.ingress.kubernetes.io/router.tls: "true"
+- name: Deploy adguard
+  kubernetes.core.helm:
+    name: stable
+    chart_ref: k8s-at-home/adguard-home
+    release_namespace: adguard
+    create_namespace: true
+    
