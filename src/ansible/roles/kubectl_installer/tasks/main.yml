@@ -77,27 +77,25 @@
             traefik.ingress.kubernetes.io/redirect-entry-point: https
             traefik.ingress.kubernetes.io/router.tls: "true"
 
-- name: Create a Service object from an inline definition
+- name: Enable deployment of basic HomeLab services
   kubernetes.core.k8s:
     state: present
     definition:
       apiVersion: argoproj.io/v1alpha1
       kind: Application
       metadata:
-        name: adguard-home
+        name: homelab
         namespace: argocd
       spec:
         project: default
         source:
-          repoURL: 'https://k8s-at-home.com/charts/'
-          targetRevision: 5.0.1
-          chart: adguard-home
+          repoURL: 'https://github.com/davidvh/internalnetwork.git'
+          path: homelab_base
+          targetRevision: HEAD
         destination:
           server: 'https://kubernetes.default.svc'
-          namespace: adguard
+          namespace: homelab
         syncPolicy:
-          automated:
-            prune: true
-            selfHeal: true
+          automated: {}
           syncOptions:
             - CreateNamespace=true
