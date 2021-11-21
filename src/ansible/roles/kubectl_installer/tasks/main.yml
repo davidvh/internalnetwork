@@ -29,52 +29,63 @@
     group: root
     mode: 0755
 
-- name: Add stable chart repo
+- name: Add cert-manager chart repo
   kubernetes.core.helm_repository:
-    name: stable-legacy
-    repo_url: "https://charts.helm.sh/stable"
+    name: cert-manager
+    repo_url: "https://charts.jetstack.io"
 
-- name: Add Prometheus chart repo
+- name: Add Argo CD chart repo
   kubernetes.core.helm_repository:
-    name: prometheus-community
-    repo_url: "https://prometheus-community.github.io/helm-charts"
+    name: argo-cd
+    repo_url: "https://argoproj.github.io/argo-helm"
 
-- name: Add K8s at home chart repo
-  kubernetes.core.helm_repository:
-    name: k8s-at-home
-    repo_url: "https://k8s-at-home.com/charts/"
-
-- name: Deploy latest version of Prometheus chart inside monitoring namespace
+- name: Deploy cert-manager
   kubernetes.core.helm:
-    name: stable
-    chart_ref: prometheus-community/kube-prometheus-stack
-    release_namespace: monitoring
+    name: cert-manager
+    chart_ref: cert-manager/cert-manager
+    chart_version: v1.0.4
+    release_namespace: cert-manager
+    create_namespace: true
+
+- name: Deploy ArgoCD
+  kubernetes.core.helm:
+    name: argocd
+    chart_ref:  argo-cd/argo-cd
+    release_namespace: argocd
     create_namespace: true
     values:
-      alertmanager:
-        ingress:
-          enabled: true
-          ingressClassName: traefik
-          hosts:
-            - alertmanager.service.marms
-          annotations:
-            traefik.ingress.kubernetes.io/frontend-entry-points: http,https
-            traefik.ingress.kubernetes.io/redirect-entry-point: https
-            traefik.ingress.kubernetes.io/router.tls: "true"
       server:
+        extraArgs:
+        - --insecure
         ingress:
           enabled: true
-          ingressClassName: traefik
-          hosts:
-            - monitoring.service.marms
+          hosts: ['argocd.service.marms']
           annotations:
             traefik.ingress.kubernetes.io/frontend-entry-points: http,https
             traefik.ingress.kubernetes.io/redirect-entry-point: https
             traefik.ingress.kubernetes.io/router.tls: "true"
-- name: Deploy adguard
-  kubernetes.core.helm:
-    name: stable
-    chart_ref: k8s-at-home/adguard-home
-    release_namespace: adguard
-    create_namespace: true
-    
+
+- name: Create a Service object from an inline definition
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: argoproj.io/v1alpha1
+      kind: Application
+      metadata:
+        name: adguard-home
+        namespace: argocd
+      spec:
+        project: default
+        source:
+          repoURL: 'https://k8s-at-home.com/charts/'
+          targetRevision: 5.0.1
+          chart: adguard-home
+        destination:
+          server: 'https://kubernetes.default.svc'
+          namespace: adguard
+        syncPolicy:
+          automated:
+            prune: true
+            selfHeal: true
+          syncOptions:
+            - CreateNamespace=true
