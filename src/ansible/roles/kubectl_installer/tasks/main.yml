@@ -1,5 +1,10 @@
 ---
 
+- name: Install package requirements
+  apt:
+    name:
+      - python3-pip
+
 - name: Install python requirements
   pip:
     name:
