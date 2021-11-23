@@ -53,7 +53,7 @@
   kubernetes.core.helm:
     name: cert-manager
     chart_ref: cert-manager/cert-manager
-    chart_version: v1.0.4
+    chart_version: v1.5.1
     release_namespace: cert-manager
     create_namespace: true
     wait: true
