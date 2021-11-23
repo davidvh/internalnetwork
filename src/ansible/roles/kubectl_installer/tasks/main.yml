@@ -57,6 +57,8 @@
     release_namespace: cert-manager
     create_namespace: true
     wait: true
+    values:
+      installCRDs: true
 
 - name: Deploy Rancher
   kubernetes.core.helm:
