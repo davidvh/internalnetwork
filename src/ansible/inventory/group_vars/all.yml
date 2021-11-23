@@ -1,5 +1,5 @@
 ---
-k3s_version: v1.22.3+k3s1
+k3s_version: v1.21.5+k3s1
 helm_version: v3.7.1
 ansible_user: root
 systemd_dir: /etc/systemd/system
