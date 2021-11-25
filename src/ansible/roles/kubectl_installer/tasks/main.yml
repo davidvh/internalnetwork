@@ -94,10 +94,6 @@
     create_namespace: true
     wait: true
     values:
-      # TODO: Configure for redundency
-      configOverride: |
-        [global]
-        osd_pool_default_size = 1
       cephClusterSpec:
         mon:
           # TODO: 3 instances on separate nodes
