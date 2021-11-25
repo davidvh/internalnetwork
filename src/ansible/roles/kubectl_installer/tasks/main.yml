@@ -85,9 +85,6 @@
       configOverride: |
         [global]
         osd_pool_default_size = 1
-        mon_warn_on_pool_no_redundancy = false
-        bdev_flock_retry = 20
-        bluefs_buffered_io = false
       cephClusterSpec:
         mon:
           # TODO: 3 instances on separate nodes
@@ -99,22 +96,10 @@
           allowMultiplePerNode: true
         dashboard:
           enabled: true
-        crashCollector:
-          # TODO: Enable
-          disable: true
         storage:
           useAllNodes: true
           useAllDevices: true
           #deviceFilter:
-        monitoring:
-          enabled: false
-        healthCheck:
-          daemonHealth:
-            mon:
-              interval: 45s
-              timeout: 600s
-        disruptionManagement:
-          managePodBudgets: true
 
 - name: Deploy Rancher
   kubernetes.core.helm:
