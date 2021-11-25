@@ -2,6 +2,6 @@
   tasks:
   - name: Set authorized key taken from file
     ansible.posix.authorized_key:
-      user: charlie
+      user: root
       state: present
       key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
