@@ -65,6 +65,19 @@
     values:
       installCRDs: true
 
+- name: Deploy Rancher
+  kubernetes.core.helm:
+    name: rancher
+    chart_ref:  rancher-stable/rancher
+    release_namespace: cattle-system
+    create_namespace: true
+    wait: true
+    values:
+      hostname: rancher.service.marms
+      ingress:
+        tls:
+          source: rancher
+
 - name: Deploy Rook-Ceph
   kubernetes.core.helm:
     name: rook-ceph
@@ -100,16 +113,3 @@
           useAllNodes: true
           useAllDevices: true
           #deviceFilter:
-
-- name: Deploy Rancher
-  kubernetes.core.helm:
-    name: rancher
-    chart_ref:  rancher-stable/rancher
-    release_namespace: cattle-system
-    create_namespace: true
-    wait: true
-    values:
-      hostname: rancher.service.marms
-      ingress:
-        tls:
-          source: rancher
