@@ -49,7 +49,7 @@
 
 - name: Install kubernetes resources
   include_tasks: "{{ item }}"
-  with:
+  with_items:
     - kubernetes/cert-manager.yaml
     - kubernetes/rancher.yaml
     - kubernetes/openebs.yaml
