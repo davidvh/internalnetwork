@@ -60,7 +60,7 @@
 - name: Add OpenEBS chart repo
   kubernetes.core.helm_repository:
     name: openebs
-    repo_url: "https://openebs.github.io/chartss"
+    repo_url: "https://openebs.github.io/charts"
 
 - name: Deploy cert-manager
   kubernetes.core.helm:
