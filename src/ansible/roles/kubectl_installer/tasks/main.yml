@@ -52,6 +52,6 @@
   with_items:
     - kubernetes/charts.yaml
     - kubernetes/openebs.yaml
-    - kubernetes/blocky.yaml
     - kubernetes/cert-manager.yaml
     - kubernetes/rancher.yaml
+    - kubernetes/blocky.yaml
