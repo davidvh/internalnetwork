@@ -190,6 +190,7 @@
       kind: Service
       metadata:
         name: blocky-lb
+        namespace: blocky
       spec:
         externalTrafficPolicy: Cluster
         ipFamilies:
