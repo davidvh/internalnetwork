@@ -192,6 +192,8 @@
         name: blocky-lb
         namespace: blocky
       spec:
+        externalIPs:
+        - 192.168.50.4
         externalTrafficPolicy: Cluster
         ipFamilies:
         - IPv4
