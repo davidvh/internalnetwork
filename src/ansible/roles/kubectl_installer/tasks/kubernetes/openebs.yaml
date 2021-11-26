@@ -1,8 +1,3 @@
-- name: Add OpenEBS chart repo
-  kubernetes.core.helm_repository:
-    name: openebs
-    repo_url: "https://openebs.github.io/charts"
-
 - name: Deploy OpenEBS
   kubernetes.core.helm:
     name: openebs
@@ -13,3 +8,37 @@
     values:
       cstor:
         enabled: true
+
+- name: Create OpenEBS pool
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: cstor.openebs.io/v1
+      kind: CStorPoolCluster
+      metadata:
+        name: openebs-default-pool
+        namespace: openebs
+      spec:
+        pools:
+          - nodeSelector:
+              kubernetes.io/hostname: "cluster1"
+            dataRaidGroups:
+            - blockDevices:
+                - blockDeviceName: "blockdevice-01892f652c6e6915d4b5d1da02a84a98"
+            poolConfig:
+              dataRaidGroupType: "stripe"
+
+- name: Create OpenEBS storage
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: storage.k8s.io/v1
+      kind: StorageClass
+      metadata:
+      name: cstor-csi-disk
+      provisioner: cstor.csi.openebs.io
+      allowVolumeExpansion: true
+      parameters:
+      replicaCount: "1"
+      cstorPoolCluster: "openebs-default-pool"
+      cas-type: "cstor"

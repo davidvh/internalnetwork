@@ -1,8 +1,3 @@
-- name: Add Rancher chart repo
-  kubernetes.core.helm_repository:
-    name: rancher-stable
-    repo_url: "https://releases.rancher.com/server-charts/stable"
-
 - name: Deploy Rancher
   kubernetes.core.helm:
     name: rancher

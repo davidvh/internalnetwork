@@ -50,6 +50,8 @@
 - name: Install kubernetes resources
   include_tasks: "{{ item }}"
   with_items:
+    - kubernetes/charts.yaml
+    - kubernetes/blocky.yaml
+    - kubernetes/openebs.yaml
     - kubernetes/cert-manager.yaml
     - kubernetes/rancher.yaml
-    - kubernetes/openebs.yaml
