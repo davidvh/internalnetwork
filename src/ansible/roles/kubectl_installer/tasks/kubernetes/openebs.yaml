@@ -1,0 +1,15 @@
+- name: Add OpenEBS chart repo
+  kubernetes.core.helm_repository:
+    name: openebs
+    repo_url: "https://openebs.github.io/charts"
+
+- name: Deploy OpenEBS
+  kubernetes.core.helm:
+    name: openebs
+    chart_ref: openebs/openebs
+    release_namespace: openebs
+    create_namespace: true
+    wait: true
+    values:
+      cstor:
+        enabled: true

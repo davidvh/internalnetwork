@@ -47,52 +47,9 @@
     group: root
     mode: 0755
 
-- name: Add cert-manager chart repo
-  kubernetes.core.helm_repository:
-    name: cert-manager
-    repo_url: "https://charts.jetstack.io"
-
-- name: Add Rancher chart repo
-  kubernetes.core.helm_repository:
-    name: rancher-stable
-    repo_url: "https://releases.rancher.com/server-charts/stable"
-
-- name: Add OpenEBS chart repo
-  kubernetes.core.helm_repository:
-    name: openebs
-    repo_url: "https://openebs.github.io/charts"
-
-- name: Deploy cert-manager
-  kubernetes.core.helm:
-    name: cert-manager
-    chart_ref: cert-manager/cert-manager
-    chart_version: v1.5.1
-    release_namespace: cert-manager
-    create_namespace: true
-    wait: true
-    values:
-      installCRDs: true
-
-- name: Deploy Rancher
-  kubernetes.core.helm:
-    name: rancher
-    chart_ref:  rancher-stable/rancher
-    release_namespace: cattle-system
-    create_namespace: true
-    wait: true
-    values:
-      hostname: rancher.service.marms
-      ingress:
-        tls:
-          source: rancher
-
-- name: Deploy OpenEBS
-  kubernetes.core.helm:
-    name: openebs
-    chart_ref: openebs/openebs
-    release_namespace: openebs
-    create_namespace: true
-    wait: true
-    values:
-      cstor:
-        enabled: true
+- name: Install kubernetes resources
+  include_tasks: "{{ item }}"
+  with:
+    - kubernetes/cert-manager.yaml
+    - kubernetes/rancher.yaml
+    - kubernetes/openebs.yaml
