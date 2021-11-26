@@ -133,29 +133,11 @@
         # optional: Log format (text or json). Default: text
 
         logFormat: text
-      controller:
-        replicas: 1
-        strategy: RollingUpdate
-      env:
-        TZ: UTC
-      image:
-        pullPolicy: IfNotPresent
-        repository: spx01/blocky
-        tag: v0.15
       metrics:
         enabled: false
-        prometheusRule:
-          enabled: false
-          labels: {}
-          rules: []
-        serviceMonitor:
-          interval: 30s
-          labels: {}
-          scrapeTimeout: 10s
       persistence:
         logs:
           enabled: false
-          mountPath: /logs
       service:
         dns-tcp:
           enabled: true
