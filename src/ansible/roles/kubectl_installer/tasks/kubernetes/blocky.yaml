@@ -22,6 +22,7 @@
           mapping:
             service.marms: 192.168.50.4
             cluster1.marms: 192.168.50.4
+            cluster1: 192.168.50.4
 
         # optional: definition, which DNS resolver(s) should be used for queries to the domain (with all sub-domains). Multiple resolvers must be separated by comma
 
