@@ -28,17 +28,6 @@
             poolConfig:
               dataRaidGroupType: "stripe"
 
-- name: Remove Rancher default storage class
-  kubernetes.core.k8s:
-    state: present
-    definition:
-      apiVersion: storage.k8s.io/v1
-      kind: StorageClass
-      metadata:
-        name: local-path
-        annotations:
-          storageclass.kubernetes.io/is-default-class: false
-
 - name: Create OpenEBS storage
   kubernetes.core.k8s:
     state: present
@@ -47,9 +36,8 @@
       kind: StorageClass
       metadata:
         name: cstor-csi-disk
-        namespace: openebs
         annotations:
-          storageclass.kubernetes.io/is-default-class: true
+          storageclass.kubernetes.io/is-default-class: "true"
       provisioner: cstor.csi.openebs.io
       allowVolumeExpansion: true
       parameters:
