@@ -1,0 +1,14 @@
+- name: Deploy WikiJs
+  kubernetes.core.helm:
+    name: wikijs
+    chart_ref:  requarks/wiki
+    release_namespace: wiki
+    create_namespace: true
+    wait: true
+    values:
+      ingress:
+        hosts:
+        - host: wiki.service.marms
+          paths:
+          - path: /
+            pathType: Prefix
