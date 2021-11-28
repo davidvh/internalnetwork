@@ -4,3 +4,17 @@
 - hosts: master[0]
   roles:
     - role: kubectl_installer
+
+- name: Regular maintenance
+  hosts: all
+  tasks:
+  - name: Install common packages
+    apt:
+      name:
+      - cockpit
+      - open-iscsi
+      - docker.io
+  - name: Upgrade the OS (apt-get dist-upgrade)
+    apt:
+      upgrade: dist
+      autoremove: yes
