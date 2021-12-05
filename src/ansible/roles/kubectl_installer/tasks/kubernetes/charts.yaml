@@ -28,7 +28,7 @@
     name: requarks
     repo_url: "https://charts.js.wiki"
 
-- name: Add csi-driver-nfs repo
+- name: Add nfs-subdir-external-provisioner repo
   kubernetes.core.helm_repository:
-    name: csi-driver-nfs
-    repo_url: "https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts"
+    name: nfs-subdir-external-provisioner
+    repo_url: "https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/"

@@ -1,3 +1,12 @@
+- name: NFS namespace
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: nfs
+
 - name: NFS Server endpoint
   kubernetes.core.k8s:
     state: present
@@ -6,6 +15,7 @@
       apiVersion: v1
       metadata:
         name: nfs-server
+        namespace: nfs
         labels:
           app: nfs-server
       spec:
@@ -28,6 +38,7 @@
       apiVersion: apps/v1
       metadata:
         name: nfs-server
+        namespace: nfs
       spec:
         replicas: 1
         selector:
@@ -65,19 +76,17 @@
                   path: /mnt/gluster/gv0
                   type: DirectoryOrCreate
 
-- name: Deploy CSI-Driver-NFS
+- name: Deploy nfs-subdir-external-provisioner
   kubernetes.core.helm:
-    name: csi-driver-nfs
-    chart_ref:  csi-driver-nfs/csi-driver-nfs
+    name: nfs-subdir-external-provisioner
+    chart_ref:  nfs-subdir-external-provisioner/nfs-subdir-external-provisioner
     release_namespace: kube-system
     create_namespace: true
     wait: true
     values:
-      controller:
-        runOnMaster: true
-        replicas: 1
-      feature:
-        enableFSGroupPolicy: true
+      nfs:
+        server: 127.0.0.1
+        path: /gv0
 
 - name: NFS StorageClass
   kubernetes.core.k8s:

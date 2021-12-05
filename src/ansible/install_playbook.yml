@@ -30,15 +30,15 @@
   - name: Create a trusted storage pool
     gluster.gluster.gluster_peer:
       state: present
-      nodes: {{ all }}
+      nodes: "{{ ansible_play_batch }}"
 
   - name: create gluster volume
     gluster.gluster.gluster_volume:
       state: present
       name: gv0
       bricks: /data/disk1/gv0
-      rebalance: yes
-      replicas: 1
+      # rebalance: yes
+      # replicas: 1
       cluster:
         - cluster1.marms
     run_once: true
@@ -52,7 +52,7 @@
   - name: mount gluster volume
     ansible.posix.mount:
       path: /mnt/gluster/gv0
-      src: /gv0
+      src: 127.0.0.1:/gv0
       fstype: glusterfs
       state: mounted
 
