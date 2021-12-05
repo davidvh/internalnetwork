@@ -85,25 +85,5 @@
     wait: true
     values:
       nfs:
-        server: 127.0.0.1
-        path: /gv0
-
-- name: NFS StorageClass
-  kubernetes.core.k8s:
-    state: present
-    definition:
-      apiVersion: storage.k8s.io/v1
-      kind: StorageClass
-      metadata:
-        name: nfs-csi
-        annotations:
-          storageclass.kubernetes.io/is-default-class: "true"
-      provisioner: nfs.csi.k8s.io
-      parameters:
         server: nfs-server.default.svc.cluster.local
-        share: /gv0
-      reclaimPolicy: Delete
-      volumeBindingMode: Immediate
-      mountOptions:
-        - hard
-        - nfsvers=4.1
+        path: /gv0
