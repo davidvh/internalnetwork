@@ -59,7 +59,7 @@
                   - name: SHARED_DIRECTORY
                     value: "/gv0"
                 volumeMounts:
-                  - mountPath: /gv0
+                  - mountPath: /exports
                     name: nfs-vol
                 securityContext:
                   privileged: true
