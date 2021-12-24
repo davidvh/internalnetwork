@@ -52,8 +52,8 @@
   with_items:
     - kubernetes/charts.yaml
     - kubernetes/cert-manager.yaml
-    - kubernetes/rancher.yaml
     - kubernetes/longhorn.yaml
+    - kubernetes/rancher.yaml
     # - kubernetes/blocky.yaml
     - kubernetes/wikijs.yaml
     - kubernetes/rook.yaml
