@@ -54,6 +54,6 @@
     - kubernetes/cert-manager.yaml
     - kubernetes/rancher.yaml
     - kubernetes/longhorn.yaml
-    - kubernetes/blocky.yaml
+    # - kubernetes/blocky.yaml
     - kubernetes/wikijs.yaml
     - kubernetes/rook.yaml
