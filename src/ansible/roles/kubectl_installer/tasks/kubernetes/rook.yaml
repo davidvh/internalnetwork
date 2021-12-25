@@ -14,6 +14,7 @@
     create_namespace: true
     wait: true
     values:
-      dashboard:
-        enabled: true
-        ssl: false
+      ingress:
+        dashboard:
+          enabled: true
+          ssl: false
