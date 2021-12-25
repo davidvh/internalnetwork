@@ -13,3 +13,7 @@
     release_namespace: rook-ceph
     create_namespace: true
     wait: true
+    values:
+      dashboard:
+        enabled: true
+        ssl: false
