@@ -14,7 +14,12 @@
     create_namespace: true
     wait: true
     values:
-      ingress:
+      cephClusterSpec:
         dashboard:
           enabled: true
           ssl: false
+      ingress:
+        dashboard:
+          host:
+            name: rook.service.marms
+            path: /
