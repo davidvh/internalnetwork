@@ -1,4 +1,4 @@
 #!/bin/bash
 
 pushd `dirname $0`/../ansible
-ansible-playbook ../external/k3s-ansible/reset.yml -i inventory/hosts.ini
+ansible-playbook reset.yml -i inventory/hosts.ini
