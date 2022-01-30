@@ -169,6 +169,7 @@
 
 - name: Map Blocky to DNS port
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
     state: present
     definition:
       apiVersion: v1

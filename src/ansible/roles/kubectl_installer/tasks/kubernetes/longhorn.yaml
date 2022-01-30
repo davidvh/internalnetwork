@@ -9,6 +9,7 @@
 
 - name: Remove local-path default storage class
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
     state: present
     definition:
       apiVersion: storage.k8s.io/v1

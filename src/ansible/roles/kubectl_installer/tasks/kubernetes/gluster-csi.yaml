@@ -1,5 +1,6 @@
 - name: NFS namespace
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
     state: present
     definition:
       apiVersion: v1
@@ -9,6 +10,7 @@
 
 - name: NFS Server endpoint
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
     state: present
     definition:
       kind: Service
@@ -32,6 +34,7 @@
 
 - name: NFS Server deployment
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
     state: present
     definition:
       kind: Deployment
