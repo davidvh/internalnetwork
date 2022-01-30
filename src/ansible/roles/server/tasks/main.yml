@@ -6,13 +6,13 @@
     --cluster
     --host {{ inventory_hostname }}
   delegate_to: localhost
-  when: inventory_hostname == master_ip
+  when: inventory_hostname == master_host
 
 - name: Join K3s
   command: >-
     k3sup join
     --server
     --host {{ inventory_hostname }}
-    --server-ip {{ master_ip }}
+    --server-host {{ master_host }}
   delegate_to: localhost
-  when: inventory_hostname != master_ip
+  when: inventory_hostname != master_host
