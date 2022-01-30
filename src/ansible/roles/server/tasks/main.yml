@@ -6,7 +6,7 @@
     --cluster
     --host {{ inventory_hostname }}
   delegate_to: localhost
-  when: "{{ inventory_hostname }}" == "{{ ansible_play_batch[0] }}"
+  when: inventory_hostname == ansible_play_batch[0]
 
 - name: Join K3s
   command: >-
@@ -15,4 +15,4 @@
     --host {{ inventory_hostname }}
     --server-ip {{ master_ip }}
   delegate_to: localhost
-  when: "{{ inventory_hostname }}" != "{{ ansible_play_batch[0] }}"
+  when: inventory_hostname!= ansible_play_batch[0]
