@@ -1,5 +1,6 @@
 - name: Deploy Blocky
   kubernetes.core.helm:
+    kubeconfig: {{ kubeconfig }}
     name: blocky
     chart_ref: k8s-at-home/blocky
     release_namespace: blocky

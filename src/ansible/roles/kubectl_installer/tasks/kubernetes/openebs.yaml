@@ -1,5 +1,6 @@
 - name: Deploy OpenEBS
   kubernetes.core.helm:
+    kubeconfig: {{ kubeconfig }}
     name: openebs
     chart_ref: openebs/openebs
     release_namespace: openebs

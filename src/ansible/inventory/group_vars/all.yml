@@ -1,6 +1,7 @@
 ---
 k3s_version: v1.21.6+k3s1
 helm_version: v3.7.1
+kubeconfig: /etc/rancher/k3s/k3s.yaml
 ansible_user: root
 systemd_dir: /etc/systemd/system
 master_host: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"

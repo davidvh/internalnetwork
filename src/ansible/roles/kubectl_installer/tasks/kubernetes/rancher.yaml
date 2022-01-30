@@ -1,5 +1,6 @@
 - name: Deploy Rancher
   kubernetes.core.helm:
+    kubeconfig: {{ kubeconfig }}
     name: rancher
     chart_ref:  rancher-stable/rancher
     release_namespace: cattle-system
