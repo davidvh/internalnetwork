@@ -3,7 +3,7 @@ k3s_version: v1.21.6+k3s1
 helm_version: v3.7.1
 ansible_user: root
 systemd_dir: /etc/systemd/system
-master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
+master_ip: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
 extra_server_args: ""
 extra_agent_args: ""
 ansible_python_interpreter: /usr/bin/python3
