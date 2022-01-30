@@ -1,0 +1,18 @@
+---
+
+- name: Install initial K3s
+  command: >-
+    k3sup install
+    --cluster
+    --host {{ inventory_hostname }}
+  delegate_to: localhost
+  when: {{ inventory_hostname }} == {{ ansible_play_batch[0] }}
+
+- name: Join K3s
+  command: >-
+    k3sup join
+    --server
+    --host {{ inventory_hostname }}
+    --server-ip {{ master_ip }}
+  delegate_to: localhost
+  when: {{ inventory_hostname }} != {{ ansible_play_batch[0] }}

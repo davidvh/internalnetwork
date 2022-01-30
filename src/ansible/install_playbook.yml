@@ -13,9 +13,10 @@
       upgrade: dist
       autoremove: yes
 
-- name: K3s
-  import_playbook: ../external/k3s-ansible/site.yml
+- hosts: server
+  roles:
+    - role: server
 
-- hosts: master[0]
+- hosts: server[0]
   roles:
     - role: kubectl_installer
