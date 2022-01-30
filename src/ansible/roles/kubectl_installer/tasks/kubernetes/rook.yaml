@@ -1,6 +1,6 @@
 - name: Deploy Rook Ceph Operator
   kubernetes.core.helm:
-    kubeconfig: {{ kubeconfig }}
+    kubeconfig: "{{ kubeconfig }}"
     name: rook-ceph
     chart_ref: rook-release/rook-ceph
     release_namespace: rook-ceph
@@ -9,7 +9,7 @@
 
 - name: Deploy Rook Ceph Cluster
   kubernetes.core.helm:
-    kubeconfig: {{ kubeconfig }}
+    kubeconfig: "{{ kubeconfig }}"
     name: rook-ceph-cluster
     chart_ref: rook-release/rook-ceph-cluster
     release_namespace: rook-ceph

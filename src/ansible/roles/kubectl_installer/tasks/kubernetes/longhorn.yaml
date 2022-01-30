@@ -1,6 +1,6 @@
 - name: Deploy Longhorn
   kubernetes.core.helm:
-    kubeconfig: {{ kubeconfig }}
+    kubeconfig: "{{ kubeconfig }}"
     name: longhorn
     chart_ref: longhorn/longhorn
     release_namespace: longhorn-system

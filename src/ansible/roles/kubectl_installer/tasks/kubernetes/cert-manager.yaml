@@ -1,6 +1,6 @@
 - name: Deploy cert-manager
   kubernetes.core.helm:
-    kubeconfig: {{ kubeconfig }}
+    kubeconfig: "{{ kubeconfig }}"
     name: cert-manager
     chart_ref: cert-manager/cert-manager
     chart_version: v1.5.1

@@ -1,6 +1,6 @@
 - name: Deploy WikiJs
   kubernetes.core.helm:
-    kubeconfig: {{ kubeconfig }}
+    kubeconfig: "{{ kubeconfig }}"
     name: wikijs
     chart_ref:  requarks/wiki
     release_namespace: wiki
