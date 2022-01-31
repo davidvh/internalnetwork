@@ -12,6 +12,7 @@
       kind: Secret
       metadata:
         name: openldap
+        namespace: ldap
       type: generic
       stringData:
         adminpassword={{ admin_secret.stdout }}
