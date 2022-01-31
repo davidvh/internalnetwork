@@ -40,7 +40,6 @@
   shell:
     cmd: cat /etc/keepalived/keepalived.conf | grep auth_pass | awk '{print $2}'
   register: keepalived_pass
-  when: keepalived_config.stat.exists
 
 - name: Create keepalived configuration
   copy:
