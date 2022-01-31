@@ -24,7 +24,7 @@
         name: openldap
         namespace: ldap
       data:
-        adminpassword: "{{ admin_secret.stdout }}"
+        adminpassword: "{{ admin_secret.stdout | b64encode }}"
       type: Opaque
 
 - name: Create OpenLdap deployment
