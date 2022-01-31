@@ -88,3 +88,98 @@
             targetPort: tcp-ldap
         selector:
           app.kubernetes.io/name: openldap
+
+- name: Install KeyCloak deployment
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    wait: true
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: keycloak
+        namespace: ldap
+        labels:
+          app: keycloak
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: keycloak
+        template:
+          metadata:
+            labels:
+              app: keycloak
+          spec:
+            containers:
+            - name: keycloak
+              image: quay.io/keycloak/keycloak:16.1.1
+              env:
+              - name: KEYCLOAK_USER
+                value: "admin"
+              - name: KEYCLOAK_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    key: adminpassword
+                    name: openldap
+              - name: PROXY_ADDRESS_FORWARDING
+                value: "true"
+              ports:
+              - name: http
+                containerPort: 8080
+              - name: https
+                containerPort: 8443
+              readinessProbe:
+                httpGet:
+                  path: /auth/realms/master
+                  port: 8080
+
+- name: Install KeyCloak service
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    wait: true
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: keycloak
+        namespace: ldap
+        labels:
+          app: keycloak
+      spec:
+        ports:
+        - name: http
+          port: 8080
+          targetPort: 8080
+        selector:
+          app: keycloak
+        type: LoadBalancer
+
+- name: Install KeyCloak ingress
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    wait: true
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: keycloak
+        namespace: ldap
+      spec:
+        tls:
+          - hosts:
+            - keycloak.{{ domain }}
+        rules:
+        - host: keycloak.{{ domain }}
+          http:
+            paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: keycloak
+                  port:
+                    number: 8080
