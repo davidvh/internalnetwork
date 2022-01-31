@@ -3,6 +3,16 @@
     cmd: cat /proc/sys/kernel/random/uuid
   register: admin_secret
 
+- name: LDAP namespace
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: ldap
+
 - name: Create OpenLdap admin secret
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig }}"
@@ -13,9 +23,9 @@
       metadata:
         name: openldap
         namespace: ldap
-      type: generic
-      stringData:
-        adminpassword={{ admin_secret.stdout }}
+      data:
+        adminpassword: {{ admin_secret.stdout }}
+      type: Opaque
 
 - name: Create OpenLdap deployment
   kubernetes.core.k8s:
