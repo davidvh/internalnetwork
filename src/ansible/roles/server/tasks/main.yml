@@ -63,8 +63,8 @@
           state BACKUP
           {% endif %}
           interface {{ default_net }}
-          virtual_router_id {{ lookup('ansible.utils.index_of', ansible_play_batch, 'eq', inventory_hostname) }}
-          priority {{ lookup('ansible.utils.index_of', ansible_play_batch, 'eq', inventory_hostname) }}
+          virtual_router_id {{ ansible_play_batch.index(inventory_hostname) }}
+          priority {{ ansible_play_batch.index(inventory_hostname) }}
           advert_int 1
           authentication {
               auth_type PASS
