@@ -54,3 +54,4 @@
     - kubernetes/cert-manager.yaml
     - kubernetes/longhorn.yaml
     - kubernetes/rancher.yaml
+    - kubernetes/openldap.yaml

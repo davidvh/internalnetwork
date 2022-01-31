@@ -1,0 +1,71 @@
+- name: Create OpenLdap admin secret
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: openldap
+      type: generic
+      stringData:
+        adminpassword={{ uuid.uuid4().hex }}
+
+- name: Create OpenLdap deployment
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: openldap
+        namespace: ldap
+        labels:
+          app.kubernetes.io/name: openldap
+      spec:
+        selector:
+          matchLabels:
+            app.kubernetes.io/name: openldap
+        replicas: 1
+        template:
+          metadata:
+            labels:
+              app.kubernetes.io/name: openldap
+          spec:
+            containers:
+              - name: openldap
+                image: docker.io/bitnami/openldap:latest
+                imagePullPolicy: "Always"
+                env:
+                  - name: LDAP_ADMIN_USERNAME
+                    value: "admin"
+                  - name: LDAP_ADMIN_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        key: adminpassword
+                        name: openldap
+                ports:
+                  - name: tcp-ldap
+                    containerPort: 1389
+
+- name: Create OpenLdap service
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: openldap
+        namespace: ldap
+        labels:
+          app.kubernetes.io/name: openldap
+      spec:
+        type: ClusterIP
+        ports:
+          - name: tcp-ldap
+            port: 1389
+            targetPort: tcp-ldap
+        selector:
+          app.kubernetes.io/name: openldap
