@@ -33,8 +33,7 @@
 
 - name: Generate random keepalived password
   shell:
-    cmd: cat /proc/sys/kernel/random/uuid
-  register: keepalived_pass
+    cmd: cat /proc/sys/kernel/random/uuid | awk '{printf "auth_pass %s", $1}' > /etc/keepalived/keepalived.conf
   when: keepalived_config.stat.exists == false
 
 - name: Read existing keepalived password
@@ -62,13 +61,13 @@
           {% else -%}
           state BACKUP
           {% endif %}
-          interface {{ default_net }}
+          interface {{ default_net.stdout }}
           virtual_router_id {{ ansible_play_batch.index(inventory_hostname) }}
           priority {{ ansible_play_batch.index(inventory_hostname) }}
           advert_int 1
           authentication {
               auth_type PASS
-              auth_pass {{ keepalived_pass }}
+              auth_pass {{ keepalived_pass.stdout }}
           }
           virtual_ipaddress {
               {{ load_balance_ip }}
