@@ -8,3 +8,4 @@ master_host: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups[
 extra_server_args: ""
 extra_agent_args: ""
 ansible_python_interpreter: /usr/bin/python3
+load_balance_ip: 192.168.50.4

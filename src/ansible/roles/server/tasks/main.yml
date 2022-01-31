@@ -1,4 +1,8 @@
 ---
+- name: Install server packages
+  apt:
+    name:
+    - keepalived
 
 - name: Install initial K3s
   command: >-
@@ -16,3 +20,71 @@
     --server-host {{ master_host }}
   delegate_to: localhost
   when: inventory_hostname != master_host
+
+- name: Get default network interface
+  shell:
+    cmd: ip route | grep 'default via' | awk '{print $5}'
+  register: default_net
+
+- name: Check for keepalived config
+  stat:
+    path: /etc/keepalived/keepalived.conf
+  register: keepalived_config
+
+- name: Generate random keepalived password
+  shell:
+    cmd: cat /proc/sys/kernel/random/uuid
+  register: keepalived_pass
+  when: keepalived_config.stat.exists == false
+
+- name: Read existing keepalived password
+  shell:
+    cmd: cat /etc/keepalived/keepalived.conf | grep auth_pass | awk '{print $2}'
+  register: keepalived_pass
+  when: keepalived_config.stat.exists
+
+- name: Create keepalived configuration
+  copy:
+    dest: "/etc/keepalived/keepalived.conf"
+    content: |
+      global_defs {
+        notification_email {
+          sysadmin@home.lab
+        }
+        notification_email_from edith01@home.lab
+        smtp_server localhost
+        smtp_connect_timeout 30
+      }
+
+      vrrp_instance VI_1 {
+          {% if inventory_hostname == master_host -%}
+          state MASTER
+          {% else -%}
+          state BACKUP
+          {% endif %}
+          interface {{ default_net }}
+          virtual_router_id {{ lookup('ansible.utils.index_of', ansible_play_batch, 'eq', inventory_hostname) }}
+          priority {{ lookup('ansible.utils.index_of', ansible_play_batch, 'eq', inventory_hostname) }}
+          advert_int 1
+          authentication {
+              auth_type PASS
+              auth_pass {{ keepalived_pass }}
+          }
+          virtual_ipaddress {
+              {{ load_balance_ip }}
+          }
+      }
+  register: keepalived_config_content
+
+- name: Enable keepalived
+  ansible.builtin.systemd:
+    name: keepalived
+    state: started
+    enabled: yes
+  when: keepalived_config_content.changed
+
+- name: Restart keepalived
+  ansible.builtin.systemd:
+    name: keepalived
+    state: restarted
+  when: keepalived_config_content.changed
