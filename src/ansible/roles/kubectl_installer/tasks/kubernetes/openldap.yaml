@@ -178,6 +178,7 @@
         tls:
           - hosts:
             - keycloak.{{ domain }}
+            secretName: keycloak-tls
         rules:
         - host: keycloak.{{ domain }}
           http:
