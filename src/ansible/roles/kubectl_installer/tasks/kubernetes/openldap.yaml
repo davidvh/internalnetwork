@@ -172,13 +172,10 @@
       metadata:
         name: keycloak
         namespace: ldap
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
       spec:
         tls:
           - hosts:
             - keycloak.{{ domain }}
-            secretName: keycloak-tls
         rules:
         - host: keycloak.{{ domain }}
           http:
