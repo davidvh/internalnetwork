@@ -7,12 +7,12 @@ RUN ansible-galaxy collection install community.general
 
 RUN pip install kubernetes
 
+RUN curl -sLS https://get.k3sup.dev | sh
+
 COPY ./ansible /ansible
 COPY ./scripts /scripts
 
 RUN chmod +x /scripts/*
-
-RUN curl -sLS https://get.k3sup.dev | sh
 
 WORKDIR /
 
