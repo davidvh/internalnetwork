@@ -190,10 +190,10 @@
 
 - name: Create LDAP user federation
   community.general.keycloak_user_federation:
-    auth_keycloak_url: https://keycloak.{{ domain }}/auth
+    auth_keycloak_url: "https://keycloak.{{ domain }}/auth"
     auth_realm: master
     auth_username: admin
-    auth_password: {{ admin_secret.stdout }}
+    auth_password: "{{ admin_secret.stdout }}"
     realm: my-realm
     name: my-ldap
     state: present
