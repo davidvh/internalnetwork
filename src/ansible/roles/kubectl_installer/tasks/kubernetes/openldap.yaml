@@ -56,6 +56,10 @@
                 image: docker.io/bitnami/openldap:latest
                 imagePullPolicy: "Always"
                 env:
+                  - name: LDAP_ROOT
+                    value: dc=marms,dc=org
+                  - name: LDAP_SKIP_DEFAULT_TREE
+                    value: yes
                   - name: LDAP_ADMIN_USERNAME
                     value: "admin"
                   - name: LDAP_ADMIN_PASSWORD
@@ -183,3 +187,50 @@
                   name: keycloak
                   port:
                     number: 8080
+
+- name: Create LDAP user federation
+  community.general.keycloak_user_federation:
+    auth_keycloak_url: https://keycloak.{{ domain }}/auth
+    auth_realm: master
+    auth_username: admin
+    auth_password: {{ admin_secret.stdout }}
+    realm: my-realm
+    name: my-ldap
+    state: present
+    provider_id: ldap
+    provider_type: org.keycloak.storage.UserStorageProvider
+    config:
+      priority: 0
+      enabled: true
+      cachePolicy: DEFAULT
+      batchSizeForSync: 1000
+      editMode: WRITABLE
+      importEnabled: true
+      syncRegistrations: false
+      vendor: other
+      usernameLDAPAttribute: uid
+      rdnLDAPAttribute: uid
+      uuidLDAPAttribute: entryUUID
+      userObjectClasses: inetOrgPerson, organizationalPerson
+      connectionUrl: ldaps://openldap.ldap.svc.cluster.local:636
+      usersDn: ou=Users,dc=marms,dc=com
+      authType: simple
+      bindDn: cn=directory reader
+      bindCredential: password
+      searchScope: 1
+      validatePasswordPolicy: false
+      trustEmail: false
+      useTruststoreSpi: ldapsOnly
+      connectionPooling: true
+      pagination: true
+      allowKerberosAuthentication: false
+      debug: false
+      useKerberosForPasswordAuthentication: false
+    mappers:
+      - name: "full name"
+        providerId: "full-name-ldap-mapper"
+        providerType: "org.keycloak.storage.ldap.mappers.LDAPStorageMapper"
+        config:
+          ldap.full.name.attribute: cn
+          read.only: false
+          write.only: false
