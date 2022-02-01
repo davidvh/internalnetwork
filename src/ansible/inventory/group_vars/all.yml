@@ -1,5 +1,5 @@
 ---
-domain: service.marms
+domain: marms.duckdns.org
 helm_version: v3.7.1
 kubeconfig: /etc/rancher/k3s/k3s.yaml
 ansible_user: root

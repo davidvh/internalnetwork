@@ -10,4 +10,7 @@
       hostname: rancher.{{ domain }}
       ingress:
         tls:
-          source: rancher
+          source: letsEncrypt
+      letsEncrypt:
+        ingress:
+          class: traefik

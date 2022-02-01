@@ -194,7 +194,7 @@
     auth_realm: master
     auth_username: admin
     auth_password: "{{ admin_secret.stdout }}"
-    realm: my-realm
+    realm: marms
     name: my-ldap
     state: present
     provider_id: ldap
