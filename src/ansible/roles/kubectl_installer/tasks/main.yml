@@ -52,5 +52,6 @@
   with_items:
     - kubernetes/charts.yaml
     - kubernetes/cert-manager.yaml
+    - kubernetes/whoami.yaml
     - kubernetes/longhorn.yaml
     - kubernetes/openldap.yaml
