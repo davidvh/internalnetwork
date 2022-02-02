@@ -209,16 +209,17 @@
     name: keycloak-tls
     namespace: ldap
 
+- name: Read the openldap admin password
+  shell:
+    cmd: kubectl get secret -n ldap openldap -o go-template='{{.data.adminpassword|base64decode}}'
+  register: admin_secret
+
 - name: Create LDAP user federation
   community.general.keycloak_user_federation:
     auth_keycloak_url: "https://keycloak.{{ domain }}/auth"
     auth_realm: master
     auth_username: admin
-    auth_password:
-      valueFrom:
-        secretKeyRef:
-          key: adminpassword
-          name: openldap
+    auth_password: {{ admin_secret.stdout }}
     realm: marms
     name: my-ldap
     state: present
