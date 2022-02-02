@@ -67,17 +67,17 @@
           cert-manager.io/cluster-issuer: letsencrypt-prod
       spec:
         rules:
-        - host: whoami.{{ domain }}
-          http:
-            paths:
-            - path: /
-              pathType: Prefix
-              backend:
-                service:
-                  name: whoami
-                  port:
-                    number: 80
+          - host: whoami.{{ domain }}
+            http:
+              paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: whoami
+                      port:
+                        number: 5678
         tls:
           - secretName: whoami-tls
             hosts:
-            - whoami.{{ domain }}
+              - whoami.{{ domain }}
