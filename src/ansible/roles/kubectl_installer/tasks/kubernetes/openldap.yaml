@@ -68,8 +68,14 @@
                 env:
                   - name: LDAP_ROOT
                     value: "dc=marms,dc=org"
-                  - name: LDAP_SKIP_DEFAULT_TREE
-                    value: "yes"
+                  - name: LDAP_USERS
+                    value: ""
+                  - name: LDAP_PASSWORDS
+                    value: ""
+                  - name: LDAP_GROUP
+                    value: home
+                  - name: LDAP_USER_DC
+                    value: users
                   - name: LDAP_ADMIN_USERNAME
                     value: "admin"
                   - name: LDAP_ADMIN_PASSWORD
