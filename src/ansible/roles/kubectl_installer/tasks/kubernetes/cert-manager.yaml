@@ -45,6 +45,7 @@
       kind: Middleware
       metadata:
         name: redirect-https
+        namespace: cert-manager
       spec:
         redirectScheme:
           scheme: https
