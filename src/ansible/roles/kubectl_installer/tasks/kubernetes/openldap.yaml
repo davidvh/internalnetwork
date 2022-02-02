@@ -191,6 +191,14 @@
                   port:
                     number: 8080
 
+- name: Wait for keycloak certificate
+  kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig }}"
+    kind: Secret
+    wait: yes
+    name: keycloak-tls
+    namespace: ldap
+
 - name: Create LDAP user federation
   community.general.keycloak_user_federation:
     auth_keycloak_url: "https://keycloak.{{ domain }}/auth"
