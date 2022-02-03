@@ -88,7 +88,7 @@
                       secretKeyRef:
                         key: adminpassword
                         name: openldap
-                  - name: LDAP_ENABLE_TLS:
+                  - name: LDAP_ENABLE_TLS
                     value: "yes"
                 ports:
                   - name: tcp-ldap
