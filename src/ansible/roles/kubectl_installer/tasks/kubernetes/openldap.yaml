@@ -244,11 +244,11 @@
       rdnLDAPAttribute: uid
       uuidLDAPAttribute: entryUUID
       userObjectClasses: inetOrgPerson, organizationalPerson
-      connectionUrl: ldaps://openldap.ldap.svc.cluster.local:636
+      connectionUrl: ldap://openldap.ldap.svc.cluster.local:1389
       usersDn: ou=Users,dc=marms,dc=com
       authType: simple
-      bindDn: cn=directory reader
-      bindCredential: password
+      bindDn: cn=admin
+      bindCredential: "{{ admin_secret.stdout }}"
       searchScope: 1
       validatePasswordPolicy: false
       trustEmail: false
