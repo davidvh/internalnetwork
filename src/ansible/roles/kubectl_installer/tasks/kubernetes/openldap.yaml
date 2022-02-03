@@ -91,6 +91,8 @@
                 ports:
                   - name: tcp-ldap
                     containerPort: 1389
+                  - name: tcp-ldaps
+                    containerPort: 1636
 
 - name: Create OpenLdap service
   kubernetes.core.k8s:
@@ -110,7 +112,10 @@
         ports:
           - name: tcp-ldap
             port: 1389
-            targetPort: 1389
+            targetPort: 389
+          - name: tcp-ldaps
+            port: 1636
+            targetPort: 636
         selector:
           app.kubernetes.io/name: openldap
 
@@ -249,7 +254,7 @@
       rdnLDAPAttribute: uid
       uuidLDAPAttribute: entryUUID
       userObjectClasses: inetOrgPerson, organizationalPerson
-      connectionUrl: ldap://openldap.ldap.svc.cluster.local:1389
+      connectionUrl: ldap://openldap.ldap.svc.cluster.local
       usersDn: ou=Users,dc=marms,dc=com
       authType: simple
       bindDn: cn=admin
