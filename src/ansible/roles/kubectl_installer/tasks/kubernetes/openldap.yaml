@@ -69,9 +69,12 @@
                   - name: LDAP_ROOT
                     value: "dc=marms,dc=org"
                   - name: LDAP_USERS
-                    value: ""
+                    value: "adminuser"
                   - name: LDAP_PASSWORDS
-                    value: ""
+                    valueFrom:
+                      secretKeyRef:
+                        key: adminpassword
+                        name: openldap
                   - name: LDAP_GROUP
                     value: home
                   - name: LDAP_USER_DC
