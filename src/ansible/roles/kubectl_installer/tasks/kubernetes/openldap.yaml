@@ -66,6 +66,8 @@
                 image: docker.io/bitnami/openldap:latest
                 imagePullPolicy: "Always"
                 env:
+                  - name: LDAP_PORT_NUMBER
+                    value: "1389"
                   - name: LDAP_ROOT
                     value: "dc=marms,dc=org"
                   - name: LDAP_USERS
@@ -88,13 +90,9 @@
                       secretKeyRef:
                         key: adminpassword
                         name: openldap
-                  - name: LDAP_ENABLE_TLS
-                    value: "yes"
                 ports:
-                  - name: tcp-ldap
+                  - name: ldap
                     containerPort: 1389
-                  - name: tcp-ldaps
-                    containerPort: 1636
 
 - name: Create OpenLdap service
   kubernetes.core.k8s:
@@ -112,12 +110,9 @@
       spec:
         type: ClusterIP
         ports:
-          - name: tcp-ldap
+          - name: ldap
             port: 1389
             targetPort: 389
-          - name: tcp-ldaps
-            port: 1636
-            targetPort: 636
         selector:
           app.kubernetes.io/name: openldap
 
