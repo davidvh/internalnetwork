@@ -80,7 +80,7 @@
                   - name: LDAP_USER_DC
                     value: users
                   - name: LDAP_SKIP_DEFAULT_TREE
-                    value: no
+                    value: "no"
                   - name: LDAP_ADMIN_USERNAME
                     value: "admin"
                   - name: LDAP_ADMIN_PASSWORD
