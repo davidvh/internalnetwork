@@ -95,3 +95,58 @@
         postgresqlPassword: "{{ authentik_password.stdout }}"
       redis:
         enabled: true
+
+- name: Create Authentik auth proxy
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    wait: true
+    definition:
+      apiVersion: networking.k8s.io/v1beta1
+      kind: Ingress
+      metadata:
+        name: authentik-outpost
+        namespace: authentik
+      spec:
+        tls:
+          - hosts:
+            - authentik.{{ domain }}
+            secretName: authentik-tls
+        rules:
+        - host: authentik.{{ domain }}
+          http:
+            paths:
+            - backend:
+                # Or, to use an external Outpost, create an ExternalName service and reference that here.
+                # See https://kubernetes.io/docs/concepts/services-networking/service/#externalname
+                serviceName: authentik
+                servicePort: 9100
+              path: /akprox
+
+- name: Create Authentik middleware
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    wait: true
+    definition:
+      apiVersion: traefik.containo.us/v1alpha1
+      kind: Middleware
+      metadata:
+        name: authentik-auth
+        namespace: authentik
+      spec:
+        forwardAuth:
+          address: https://authentik.{{ domain }}:9100/akprox/auth/traefik
+          trustForwardHeader: true
+          authResponseHeaders:
+            - X-authentik-username
+            - X-authentik-groups
+            - X-authentik-email
+            - X-authentik-name
+            - X-authentik-uid
+            - X-authentik-jwt
+            - X-authentik-meta-jwks
+            - X-authentik-meta-outpost
+            - X-authentik-meta-provider
+            - X-authentik-meta-app
+            - X-authentik-meta-version
