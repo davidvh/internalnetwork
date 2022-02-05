@@ -1,3 +1,5 @@
+# Visit https://authentik.{{ domain }}/if/flow/initial-setup/ to configure the admin user.
+
 - name: Authentik namespace
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig }}"
