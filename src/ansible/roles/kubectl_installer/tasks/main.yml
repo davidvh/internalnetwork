@@ -54,4 +54,4 @@
     - kubernetes/cert-manager.yaml
     - kubernetes/whoami.yaml
     - kubernetes/longhorn.yaml
-    - kubernetes/openldap.yaml
+    - kubernetes/authentik.yaml

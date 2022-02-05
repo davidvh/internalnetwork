@@ -1,0 +1,90 @@
+- name: Authentik namespace
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: authentik
+
+- name: Check for existing secret
+  kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig }}"
+    kind: Secret
+    name: generated
+    namespace: authentik
+  register: generated_secret
+
+- name: Generate random secret key
+  shell:
+    cmd: echo `cat /proc/sys/kernel/random/uuid``cat /proc/sys/kernel/random/uuid`
+  register: new_generated_secret
+  when: generated_secret.failed
+
+- name: Generate random password
+  shell:
+    cmd: cat /proc/sys/kernel/random/uuid
+  register: new_generated_password
+  when: generated_secret.failed
+
+- name: Create Authentik secret
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    wait: true
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: generated
+        namespace: authentik
+      data:
+        secret: "{{ new_generated_secret.stdout | b64encode }}"
+        password: "{{ new_generated_secret.stdout | b64encode }}"
+      type: Opaque
+  when: generated_secret.failed
+
+- name: Read the Authentik secret
+  shell:
+    cmd: kubectl get secret -n authentik generated -o go-template='{{ '{{.data.secret|base64decode}}' }}'
+  register: authentik_secret
+
+- name: Read the Authentik password
+  shell:
+    cmd: kubectl get secret -n authentik generated -o go-template='{{ '{{.data.password|base64decode}}' }}'
+  register: authentik_password
+
+- name: Deploy Authentik
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    name: authentik
+    chart_ref:  authentik/authentik
+    release_namespace: authentik
+    create_namespace: true
+    wait: true
+    values:
+      authentik:
+        secret_key: "{{ authentik_secret.stdout }}"
+        # This sends anonymous usage-data, stack traces on errors and
+        # performance data to sentry.beryju.org, and is fully opt-in
+        error_reporting:
+          enabled: true
+        postgresql:
+          password: "{{ authentik_password.stdout }}"
+
+      ingress:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+        hosts:
+        - host: authentik.{{ domain }}
+          paths:
+          - path: "/"
+            pathType: Prefix
+
+      postgresql:
+        enabled: true
+        postgresqlPassword: "{{ authentik_password.stdout }}"
+      redis:
+        enabled: true
