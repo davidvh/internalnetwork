@@ -20,13 +20,13 @@
   shell:
     cmd: echo `cat /proc/sys/kernel/random/uuid``cat /proc/sys/kernel/random/uuid`
   register: new_generated_secret
-  when: generated_secret.failed
+  when: not generated_secret.resources
 
 - name: Generate random password
   shell:
     cmd: cat /proc/sys/kernel/random/uuid
   register: new_generated_password
-  when: generated_secret.failed
+  when: not generated_secret.resources
 
 - name: Create Authentik secret
   kubernetes.core.k8s:
@@ -43,8 +43,9 @@
         secret: "{{ new_generated_secret.stdout | b64encode }}"
         password: "{{ new_generated_secret.stdout | b64encode }}"
       type: Opaque
-  when: generated_secret.failed
+  when: not generated_secret.resources
 
+# TODO: generated_secret.resources[0].data.secret | b64decode
 - name: Read the Authentik secret
   shell:
     cmd: kubectl get secret -n authentik generated -o go-template='{{ '{{.data.secret|base64decode}}' }}'
@@ -82,6 +83,10 @@
           paths:
           - path: "/"
             pathType: Prefix
+        tls:
+          - secretName: authentik-tls
+            hosts:
+              - authentik.{{ domain }}
 
       postgresql:
         enabled: true
