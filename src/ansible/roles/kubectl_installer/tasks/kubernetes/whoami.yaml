@@ -66,7 +66,7 @@
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prod
           ingress.kubernetes.io/auth-type: forward
-          ingress.kubernetes.io/auth-url: https://authentik.{{ domain }}/akprox/auth/traefik
+          ingress.kubernetes.io/auth-url: https://authentikprox.{{ domain }}:9100/akprox/auth/traefik
           ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
       spec:
         rules:
