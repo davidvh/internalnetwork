@@ -87,8 +87,9 @@
           - path: "/"
             pathType: Prefix
         tls:
-            hosts:
+          - hosts:
               - authentik.{{ domain }}
+            secretName: authentik-tls
       postgresql:
         enabled: true
         postgresqlPassword: "{{ authentik_password.stdout }}"
@@ -114,6 +115,7 @@
         tls:
           - hosts:
             - authentikprox.{{ domain }}
+            secretName: authentikprox-tls
         rules:
         - host: authentikprox.{{ domain }}
           http:

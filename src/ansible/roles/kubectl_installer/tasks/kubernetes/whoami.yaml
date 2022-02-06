@@ -86,3 +86,12 @@
         tls:
           - hosts:
               - whoami.{{ domain }}
+            secretName: whoami-tls
+
+- name: Wait for whoami certificate
+  kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig }}"
+    kind: Secret
+    wait: yes
+    name: whoami-tls
+    namespace: whoami
