@@ -1,0 +1,9 @@
+- name: Deploy nginx
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    name: nginx-ingress
+    chart_ref: nginx-stable/nginx-ingress
+    chart_version: v2.1.0
+    release_namespace: nginx-ingress
+    create_namespace: true
+    wait: true

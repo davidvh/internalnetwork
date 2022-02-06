@@ -13,4 +13,4 @@
           source: letsEncrypt
       letsEncrypt:
         ingress:
-          class: traefik
+          class: nginx

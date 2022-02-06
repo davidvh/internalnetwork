@@ -33,20 +33,4 @@
           solvers:
           - http01:
               ingress:
-                class: traefik
-
-- name: Configure HTTPS redirect
-  kubernetes.core.k8s:
-    kubeconfig: "{{ kubeconfig }}"
-    state: present
-    wait: true
-    definition:
-      apiVersion: traefik.containo.us/v1alpha1
-      kind: Middleware
-      metadata:
-        name: redirect-https
-        namespace: cert-manager
-      spec:
-        redirectScheme:
-          scheme: https
-          permanent: true
+                class: nginx
