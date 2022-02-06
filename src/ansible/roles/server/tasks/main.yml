@@ -19,6 +19,7 @@
     --server
     --host {{ inventory_hostname }}
     --server-host {{ master_host }}
+    --k3s-extra-args '--disable traefik'
   delegate_to: localhost
   when: inventory_hostname != master_host
 
