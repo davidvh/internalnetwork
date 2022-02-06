@@ -51,6 +51,7 @@
   include_tasks: "{{ item }}"
   with_items:
     - kubernetes/charts.yaml
+    - kubernetes/nginx.yaml
     - kubernetes/cert-manager.yaml
     - kubernetes/whoami.yaml
     - kubernetes/longhorn.yaml

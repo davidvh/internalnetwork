@@ -9,7 +9,7 @@
     k3sup install
     --cluster
     --host {{ inventory_hostname }}
-    --k3s-extra-args '--no-deploy traefik'
+    --k3s-extra-args '--disable traefik'
   delegate_to: localhost
   when: inventory_hostname == master_host
 
