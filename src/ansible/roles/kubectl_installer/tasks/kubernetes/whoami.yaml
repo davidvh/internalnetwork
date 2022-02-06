@@ -64,6 +64,7 @@
         name: whoami
         namespace: whoami
         annotations:
+          kubernetes.io/ingress.class: nginx
           cert-manager.io/cluster-issuer: letsencrypt-prod
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/auth-url: "https://authentikprox.{{ domain }}/akprox/auth/nginx"
@@ -83,14 +84,5 @@
                       port:
                         number: 5678
         tls:
-          - secretName: whoami-tls
-            hosts:
+          - hosts:
               - whoami.{{ domain }}
-
-- name: Wait for whoami certificate
-  kubernetes.core.k8s_info:
-    kubeconfig: "{{ kubeconfig }}"
-    kind: Secret
-    wait: yes
-    name: whoami-tls
-    namespace: whoami
