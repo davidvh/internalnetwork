@@ -14,3 +14,7 @@
       command:
         cmd: k3s-agent-uninstall.sh
         removes: /usr/local/bin/k3s-agent-uninstall.sh
+    - name: "Delete K3s manifests"
+      command:
+        cmd: rm -r /var/lib/rancher/k3s/server/manifests
+        removes: /var/lib/rancher/k3s/server/manifests
