@@ -122,8 +122,8 @@
             paths:
             - backend:
                 service:
-                  name: authentik
+                  name: ak-outpost-authentik-embedded-outpost
                   port:
-                    number: 9100
+                    number: 9000
               path: /akprox
               pathType: Prefix
