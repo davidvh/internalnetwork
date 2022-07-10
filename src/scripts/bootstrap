@@ -1,4 +1,4 @@
 #!/bin/bash
 
-pushd `dirname $0`/../ansible
+pushd /ansible
 ansible-playbook install_playbook.yml -i inventory/hosts.ini

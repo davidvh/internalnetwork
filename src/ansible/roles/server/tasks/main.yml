@@ -10,6 +10,7 @@
     --cluster
     --host {{ inventory_hostname }}
     --k3s-extra-args '--disable traefik'
+    --local-path ~/.kube/config --merge
   delegate_to: localhost
   when: inventory_hostname == master_host
 
@@ -20,6 +21,7 @@
     --host {{ inventory_hostname }}
     --server-host {{ master_host }}
     --k3s-extra-args '--disable traefik'
+    --local-path ~/.kube/config --merge
   delegate_to: localhost
   when: inventory_hostname != master_host
 

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ssh -t root@$1 k3s-killall.sh
+ssh -t root@$1 k3s-uninstall.sh

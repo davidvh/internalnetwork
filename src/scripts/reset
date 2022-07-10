@@ -1,4 +1,0 @@
-#!/bin/bash
-
-pushd `dirname $0`/../ansible
-ansible-playbook reset.yml -i inventory/hosts.ini

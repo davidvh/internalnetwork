@@ -16,7 +16,3 @@
 - hosts: server
   roles:
     - role: server
-
-- hosts: server[0]
-  roles:
-    - role: kubectl_installer

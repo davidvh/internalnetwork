@@ -1,0 +1,3 @@
+#!/bin/bash
+
+flux bootstrap git --url=ssh://git@github.com/davidvh/fluxio.git --branch=main --path=cluster --private-key-file=/root/.ssh/id_rsa
